@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="9efc94b4-cb0f-4969-b280-0b5af2fe5567" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AQAcquisitionService.xsd" MetadataType="Schema" ID="1fc8115b-440d-42b1-9836-c5bd4e11dd83" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd2" />
+    <MetadataFile FileName="AQAcquisitionService1.xsd" MetadataType="Schema" ID="c43274d8-9a61-4548-acf0-74eeafe9fd61" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd3" />
+    <MetadataFile FileName="AQAcquisitionService.disco" MetadataType="Disco" ID="d5719240-bc98-4835-97fc-e61623ec4cb9" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?disco" />
+    <MetadataFile FileName="AQAcquisitionService2.xsd" MetadataType="Schema" ID="eb0d725e-3d5a-4a5f-9659-2d565de7b42d" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd6" />
+    <MetadataFile FileName="AQAcquisitionService3.xsd" MetadataType="Schema" ID="a0593027-693d-43a3-b1a1-db7286117668" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd0" />
+    <MetadataFile FileName="AQAcquisitionService4.xsd" MetadataType="Schema" ID="c98374bd-4196-4903-9918-4f02b718c95b" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd7" />
+    <MetadataFile FileName="AQAcquisitionService.wsdl" MetadataType="Wsdl" ID="c1ceb74b-13f7-4404-8aef-8f9a1cdc7a4d" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?wsdl" />
+    <MetadataFile FileName="AQAcquisitionService5.xsd" MetadataType="Schema" ID="70315dae-bdac-476b-9b27-e4837e54b242" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd5" />
+    <MetadataFile FileName="AQAcquisitionService6.xsd" MetadataType="Schema" ID="1d4e899f-7497-4b6c-a034-e99921bbb994" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd4" />
+    <MetadataFile FileName="AQAcquisitionService7.xsd" MetadataType="Schema" ID="8f12170e-1e91-4a1f-a3d8-7d8d2f57ce12" SourceId="1" SourceUrl="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

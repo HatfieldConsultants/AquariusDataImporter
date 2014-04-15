@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{91C30EF9-C03B-461B-A93B-1C4D6714A015}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hatfield.AquariusDataImporter.Core</RootNamespace>
+    <AssemblyName>Hatfield.AquariusDataImporter.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>$(SolutionDir)\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>$(SolutionDir)\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aquarius\AquariusAdapter.cs" />
+    <Compile Include="Aquarius\IAquariusAdapter.cs" />
+    <Compile Include="Helpers\SutronDataDownloadHelper.cs" />
+    <Compile Include="IImportable.cs" />
+    <Compile Include="IImportTaskHandler.cs" />
+    <Compile Include="LongTimeoutWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Models\Sutron\SimpleSutronImportTask.cs" />
+    <Compile Include="Models\Sutron\SutronParameter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\Aquarius\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="TaskHandlerFactory.cs" />
+    <Compile Include="TaskHandlers\SimpleSutronImportTaskHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Service References\Aquarius\AQAcquisitionService.wsdl" />
+    <None Include="Service References\Aquarius\AQAcquisitionService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Aquarius\AQAcquisitionService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Aquarius\AQAcquisitionService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Aquarius\AQAcquisitionService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Aquarius\AQAcquisitionService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Aquarius\AQAcquisitionService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Aquarius\AQAcquisitionService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Aquarius\AQAcquisitionService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Aquarius\Hatfield.AquariusDataImporter.Core.Aquarius.AppendResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Aquarius\Hatfield.AquariusDataImporter.Core.Aquarius.FieldVisit.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Aquarius\Hatfield.AquariusDataImporter.Core.Aquarius.LocationDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Aquarius\Hatfield.AquariusDataImporter.Core.Aquarius.TimeSeriesDescription.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Aquarius\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Aquarius\AQAcquisitionService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Aquarius\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Aquarius\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Aquarius\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Hatfield.Aquarius.PublicServiceAPI\Hatfield.Aquarius.PublicServiceAPI.csproj">
+      <Project>{52F08CF3-A36C-418B-8AE6-6B7347C718A8}</Project>
+      <Name>Hatfield.Aquarius.PublicServiceAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

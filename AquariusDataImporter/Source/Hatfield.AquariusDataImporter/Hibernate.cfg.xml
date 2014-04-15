@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
+  <session-factory>
+    <property name="connection.provider">NHibernate.Connection.DriverConnectionProvider</property>
+    <property name="dialect">NHibernate.Dialect.MySQLDialect</property>
+    <property name="connection.driver_class">NHibernate.Driver.MySqlDataDriver</property>
+    <property name="connection.connection_string">server=your_server;user=your_user;pwd=your_password;database=your_database;</property>
+    <property name="connection.release_mode">on_close</property>
+    <property name="show_sql">false</property>
+    <!--property name="hbm2ddl.auto">create</property-->
+    <!--<property name="hbm2ddl.auto">validate</property>-->
+  </session-factory>
+</hibernate-configuration>

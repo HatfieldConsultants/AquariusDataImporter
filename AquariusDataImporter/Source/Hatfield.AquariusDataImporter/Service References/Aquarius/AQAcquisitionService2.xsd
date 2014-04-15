@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/AQAcquisitionService.Dto" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/AQAcquisitionService.Dto" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="AppendResult">
+    <xs:sequence>
+      <xs:element name="AppendToken" nillable="true" type="xs:string" />
+      <xs:element name="NumPointsAppended" type="xs:int" />
+      <xs:element name="TsIdentifier" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AppendResult" nillable="true" type="tns:AppendResult" />
+  <xs:complexType name="ArrayOfFieldVisit">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FieldVisit" nillable="true" type="tns:FieldVisit" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFieldVisit" nillable="true" type="tns:ArrayOfFieldVisit" />
+  <xs:complexType name="FieldVisit">
+    <xs:sequence>
+      <xs:element name="EndDate" nillable="true" type="xs:dateTime" />
+      <xs:element name="FieldVisitID" type="xs:long" />
+      <xs:element name="HistoryLog" nillable="true" type="xs:string" />
+      <xs:element name="LocationID" type="xs:long" />
+      <xs:element name="Measurements" nillable="true" type="tns:ArrayOfFieldVisitMeasurement" />
+      <xs:element name="Party" nillable="true" type="xs:string" />
+      <xs:element name="Remarks" nillable="true" type="xs:string" />
+      <xs:element name="StartDate" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FieldVisit" nillable="true" type="tns:FieldVisit" />
+  <xs:complexType name="ArrayOfFieldVisitMeasurement">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FieldVisitMeasurement" nillable="true" type="tns:FieldVisitMeasurement" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFieldVisitMeasurement" nillable="true" type="tns:ArrayOfFieldVisitMeasurement" />
+  <xs:complexType name="FieldVisitMeasurement">
+    <xs:sequence>
+      <xs:element name="ApprovalLevelID" nillable="true" type="xs:long" />
+      <xs:element minOccurs="0" name="DisplayId" nillable="true" type="xs:string" />
+      <xs:element name="FieldVisitID" type="xs:long" />
+      <xs:element name="LaboratoryId" nillable="true" type="xs:string" />
+      <xs:element name="LastModified" type="xs:dateTime" />
+      <xs:element name="MeasurementDetails" nillable="true" type="xs:string" />
+      <xs:element name="MeasurementEndTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="MeasurementID" type="xs:long" />
+      <xs:element name="MeasurementMediaId" nillable="true" type="xs:long" />
+      <xs:element name="MeasurementTime" type="xs:dateTime" />
+      <xs:element name="MeasurementType" nillable="true" type="xs:string" />
+      <xs:element name="Remarks" nillable="true" type="xs:string" />
+      <xs:element name="Results" nillable="true" type="tns:ArrayOfFieldVisitResult" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FieldVisitMeasurement" nillable="true" type="tns:FieldVisitMeasurement" />
+  <xs:complexType name="ArrayOfFieldVisitResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FieldVisitResult" nillable="true" type="tns:FieldVisitResult" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFieldVisitResult" nillable="true" type="tns:ArrayOfFieldVisitResult" />
+  <xs:complexType name="FieldVisitResult">
+    <xs:sequence>
+      <xs:element name="CorrectedResult" nillable="true" type="xs:double" />
+      <xs:element name="Correction" nillable="true" type="xs:double" />
+      <xs:element name="EndTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="MeasurementID" type="xs:long" />
+      <xs:element name="ObservedResult" type="xs:double" />
+      <xs:element name="ParameterID" nillable="true" type="xs:string" />
+      <xs:element name="PercentUncertainty" nillable="true" type="xs:double" />
+      <xs:element name="Qualifier" nillable="true" type="xs:string" />
+      <xs:element name="QualityCodeID" nillable="true" type="xs:long" />
+      <xs:element name="Remarks" nillable="true" type="xs:string" />
+      <xs:element name="ResultDetails" nillable="true" type="xs:string" />
+      <xs:element name="ResultID" type="xs:long" />
+      <xs:element name="ResultType" nillable="true" type="xs:int" />
+      <xs:element name="StartTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="UnitID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FieldVisitResult" nillable="true" type="tns:FieldVisitResult" />
+</xs:schema>

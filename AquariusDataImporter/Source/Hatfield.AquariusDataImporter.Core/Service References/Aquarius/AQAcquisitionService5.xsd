@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/AquariusDataService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/AquariusDataService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="ArrayOfTimeSeriesDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TimeSeriesDescription" nillable="true" type="tns:TimeSeriesDescription" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTimeSeriesDescription" nillable="true" type="tns:ArrayOfTimeSeriesDescription" />
+  <xs:complexType name="TimeSeriesDescription">
+    <xs:sequence>
+      <xs:element name="AqDataID" type="xs:long" />
+      <xs:element name="Aqtimeseriestype" nillable="true" type="xs:string" />
+      <xs:element name="EndTime" type="xs:dateTime" />
+      <xs:element name="EndValue" type="xs:double" />
+      <xs:element name="Label" nillable="true" type="xs:string" />
+      <xs:element name="LastModified" type="xs:dateTime" />
+      <xs:element name="TotalSamples" type="xs:long" />
+      <xs:element minOccurs="0" name="Identifier" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ParameterName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ParameterType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TimeSeriesIdentifier" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Units" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TimeSeriesDescription" nillable="true" type="tns:TimeSeriesDescription" />
+  <xs:complexType name="ArrayOfLocationDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="LocationDTO" nillable="true" type="tns:LocationDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLocationDTO" nillable="true" type="tns:ArrayOfLocationDTO" />
+  <xs:complexType name="LocationDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Elevation" nillable="true" type="xs:float" />
+      <xs:element minOccurs="0" name="ElevationUnits" nillable="true" type="xs:string" />
+      <xs:element name="Identifier" nillable="true" type="xs:string" />
+      <xs:element name="Latitude" nillable="true" type="xs:float" />
+      <xs:element name="LocationName" nillable="true" type="xs:string" />
+      <xs:element name="LocationPath" nillable="true" type="xs:string" />
+      <xs:element name="LocationTypeName" nillable="true" type="xs:string" />
+      <xs:element name="Longitude" nillable="true" type="xs:float" />
+      <xs:element name="UtcOffset" type="xs:float" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ExtendedAttributes" nillable="true" type="q1:ArrayOfKeyValueOfstringanyType" />
+      <xs:element name="LocationId" nillable="true" type="xs:long" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LocationDTO" nillable="true" type="tns:LocationDTO" />
+</xs:schema>

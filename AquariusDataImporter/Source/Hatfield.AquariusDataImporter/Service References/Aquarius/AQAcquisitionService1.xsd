@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/AcquisitionService.Dto.TimeSeriesProcess" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/AcquisitionService.Dto.TimeSeriesProcess" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://hf-gtvan-app02.hatcon.local/AQUARIUS/AQAcquisitionService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Aquarius.Util" />
+  <xs:complexType name="CustomUpdateResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CustomProcessResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AppliedUtcTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="CorrectionGuid" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PointsCount" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CustomUpdateResult" nillable="true" type="tns:CustomUpdateResult" />
+  <xs:complexType name="CustomProcessResult">
+    <xs:sequence>
+      <xs:element name="ResultType" type="tns:CustomProcessType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomProcessResult" nillable="true" type="tns:CustomProcessResult" />
+  <xs:simpleType name="CustomProcessType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Append" />
+      <xs:enumeration value="Update" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CustomProcessType" nillable="true" type="tns:CustomProcessType" />
+  <xs:complexType name="CustomAppendResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CustomProcessResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AppendToken" type="xs:double" />
+          <xs:element minOccurs="0" name="PointsCount" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CustomAppendResult" nillable="true" type="tns:CustomAppendResult" />
+  <xs:complexType name="CustomUpdateGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Comment" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdateDataList" nillable="true" type="tns:ArrayOfCustomUpdateData" />
+      <xs:element minOccurs="0" name="User" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomUpdateGroup" nillable="true" type="tns:CustomUpdateGroup" />
+  <xs:complexType name="ArrayOfCustomUpdateData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomUpdateData" nillable="true" type="tns:CustomUpdateData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCustomUpdateData" nillable="true" type="tns:ArrayOfCustomUpdateData" />
+  <xs:complexType name="CustomUpdateData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Csv" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Aquarius.Util" minOccurs="0" name="TimeRange" nillable="true" type="q1:DateTimeRange" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomUpdateData" nillable="true" type="tns:CustomUpdateData" />
+  <xs:complexType name="CustomGroupResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Error" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProcessResults" nillable="true" type="tns:ArrayOfCustomProcessResult" />
+      <xs:element minOccurs="0" name="Result" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomGroupResult" nillable="true" type="tns:CustomGroupResult" />
+  <xs:complexType name="ArrayOfCustomProcessResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomProcessResult" nillable="true" type="tns:CustomProcessResult" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCustomProcessResult" nillable="true" type="tns:ArrayOfCustomProcessResult" />
+</xs:schema>
