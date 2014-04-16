@@ -60,6 +60,7 @@
     <Compile Include="LongTimeoutWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Models\ImportResult.cs" />
     <Compile Include="Models\Sutron\FortHillWaterIntakeImportTask.cs" />
     <Compile Include="Models\Sutron\SimpleSutronImportTask.cs" />
     <Compile Include="Models\Sutron\SutronParameter.cs" />

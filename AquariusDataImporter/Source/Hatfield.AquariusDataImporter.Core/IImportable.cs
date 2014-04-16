@@ -7,5 +7,6 @@ namespace Hatfield.AquariusDataImporter.Core
 {
     public interface IImportable
     {
+
     }
 }

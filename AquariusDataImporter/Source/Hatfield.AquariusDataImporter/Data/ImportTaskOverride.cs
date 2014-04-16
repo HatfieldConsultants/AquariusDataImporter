@@ -12,7 +12,7 @@ namespace Hatfield.AquariusDataImporter.Data
     {
         public void Override(AutoMapping<ImportTask> mapping)
         {
-            mapping.Table("ImportTask");
+            mapping.Table("importtask");
             mapping.Id(x => x.Id, "Id");
             mapping.Map(x => x.DefinitionJsonString).Length(99999);
         }

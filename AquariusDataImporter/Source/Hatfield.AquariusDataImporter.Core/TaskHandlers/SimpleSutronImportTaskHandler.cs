@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Hatfield.AquariusDataImporter.Core.Models.Sutron;
-
+using Hatfield.AquariusDataImporter.Core.Models;
 using log4net;
 using Hatfield.AquariusDataImporter.Core.Aquarius;
 using Hatfield.AquariusDataImporter.Core.Helpers;
@@ -23,13 +23,24 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
             _aquariusAdapter = aquariusAdapter;
         }
 
-        public virtual void Import(IImportable task)
+        public virtual ImportResult Import(IImportable task, DateTime? lastImportTime, int interval)
         {
             var castedTask = task as SimpleSutronImportTask;
             if (castedTask == null)
             {
                 throw new InvalidCastException("Casted to Simple Sutron Import Task fail");
             }
+
+            //still within interval
+            if(lastImportTime.HasValue && (DateTime.Now < lastImportTime.Value.AddMinutes(interval)))
+            {
+                return new ImportResult { 
+                    Success = false,
+                    LogMessage = "Task still within the execute interval, skip"
+                };
+            }
+
+            
 
             var dataFileList = SutronDataDownloadHelper.FetchDownloadableDataFileList(castedTask.DownloadURL);
 
@@ -50,7 +61,11 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                     errorThreshold--;
                     if (errorThreshold < 0)
                     {
-                        throw ex;
+                        return new ImportResult
+                        {
+                            Success = false,
+                            LogMessage = "Task execute fail"
+                        };
                     }
                     else
                     {
@@ -60,6 +75,12 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                 }
                 
             }
+
+            return new ImportResult
+            {
+                Success = true,
+                LogMessage = "Task execute successfully"
+            };
             
         }
 

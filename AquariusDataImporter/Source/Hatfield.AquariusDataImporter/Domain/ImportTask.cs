@@ -10,6 +10,9 @@ namespace Hatfield.AquariusDataImporter.Domain
         public virtual int Id { get; protected set; }
         public virtual string Name { get; set; }
         public virtual string HandlerName { get; set; }
+        public virtual DateTime? LastImportTime { get; set; }
+        public virtual string LastImportLog { get; set; }
+        public virtual int Interval { get; set; }
         public virtual string DefinitionJsonString { get; set; }
     }
 }

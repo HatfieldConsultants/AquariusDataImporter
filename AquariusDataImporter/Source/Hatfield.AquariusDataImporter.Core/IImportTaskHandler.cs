@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Hatfield.AquariusDataImporter.Core.Models;
 
 namespace Hatfield.AquariusDataImporter.Core
 {
     public interface IImportTaskHandler
     {
-        void Import(IImportable task);
+        ImportResult Import(IImportable task, DateTime? lastImportTime, int interval);
     }
 }

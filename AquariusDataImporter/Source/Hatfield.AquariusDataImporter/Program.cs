@@ -12,6 +12,7 @@ using NHibernate.Tool.hbm2ddl;
 using Hatfield.AquariusDataImporter.Data;
 using Hatfield.AquariusDataImporter.Domain;
 using Hatfield.AquariusDataImporter.Core;
+using Hatfield.AquariusDataImporter.Core.Models;
 using System;
 
 namespace Hatfield.AquariusDataImporter
@@ -25,7 +26,9 @@ namespace Hatfield.AquariusDataImporter
 
             var sessionFactory = CreateSessionFactory();
             log.Debug("Get all tasks from database");
-            var allTasks = sessionFactory.OpenSession().QueryOver<ImportTask>().List();
+
+            var dbSession = sessionFactory.OpenSession();
+            var allTasks = dbSession.QueryOver<ImportTask>().List();
             log.Debug("# of tasks " + allTasks.Count);
 
             foreach(var taskDomain in allTasks)
@@ -37,13 +40,36 @@ namespace Hatfield.AquariusDataImporter
                     log.Debug("Create task handler " + taskDomain.HandlerName);
                     var handler = TaskHandlerFactory.CreateTaskHandler(taskDomain.HandlerName);
 
-                    handler.Import(task);
+                    var result = handler.Import(task, taskDomain.LastImportTime, taskDomain.Interval);
+
+                    SaveImportLog(taskDomain, result, dbSession);
                 }
                 catch(Exception ex)
                 {
                     log.Error("handle task" + taskDomain.Name + "fail due to " + ex.StackTrace);
                 }
             }
+        }
+
+        private static void SaveImportLog(ImportTask task, ImportResult result, ISession dbSession)
+        { 
+            if(result.Success)
+            {
+                task.LastImportTime = DateTime.Now;
+            }
+            task.LastImportLog = result.LogMessage;
+
+            try
+            {
+                dbSession.BeginTransaction();
+                dbSession.SaveOrUpdate(task);
+                dbSession.Transaction.Commit();
+            }
+            catch(Exception ex)
+            {
+                dbSession.Transaction.Rollback();
+            }
+            
         }
 
         // Returns our session factory
@@ -53,8 +79,7 @@ namespace Hatfield.AquariusDataImporter
             Configuration config = new Configuration().Configure("Hibernate.cfg.xml");
             // load mappings from this assembly
             return Fluently.Configure(config)
-                .Mappings(m => m.AutoMappings.Add(new AutoPersistenceModelGenerator().GenerateDataBaseMapping()))
-                .CurrentSessionContext<WebSessionContext>()
+                .Mappings(m => m.AutoMappings.Add(new AutoPersistenceModelGenerator().GenerateDataBaseMapping()))                
                 .BuildSessionFactory();
         }
     }
