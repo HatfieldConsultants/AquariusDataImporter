@@ -7,7 +7,7 @@ namespace Hatfield.AquariusDataImporter.Core.Models.Sutron
 {
     public class SimpleSutronImportTask : IImportable
     {
-        private static readonly int defaultNumberOfMinute = 20;
+        protected static readonly int defaultNumberOfMinute = 20;
 
         public string DownloadURL { get; set; }
         public string FileNameRegex { get; set; }

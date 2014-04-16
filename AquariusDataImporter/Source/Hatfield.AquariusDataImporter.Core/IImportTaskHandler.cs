@@ -7,6 +7,6 @@ namespace Hatfield.AquariusDataImporter.Core
 {
     public interface IImportTaskHandler
     {
-        bool Import(IImportable task);
+        void Import(IImportable task);
     }
 }

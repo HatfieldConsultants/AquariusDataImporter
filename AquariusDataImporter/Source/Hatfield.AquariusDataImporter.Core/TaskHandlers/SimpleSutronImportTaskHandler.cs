@@ -23,7 +23,7 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
             _aquariusAdapter = aquariusAdapter;
         }
 
-        public bool Import(IImportable task)
+        public virtual void Import(IImportable task)
         {
             var castedTask = task as SimpleSutronImportTask;
             if (castedTask == null)
@@ -60,10 +60,10 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                 }
                 
             }
-            return false;
+            
         }
 
-        protected void ImportDataToAquarius(string dataFileString, SimpleSutronImportTask task)
+        protected virtual void ImportDataToAquarius(string dataFileString, SimpleSutronImportTask task)
         {
             var linesOfData = ExtractDataFromDownloadString(dataFileString);
             var paramentIdDictionary = GetParametersIndexAquariusIdDictionary(task);

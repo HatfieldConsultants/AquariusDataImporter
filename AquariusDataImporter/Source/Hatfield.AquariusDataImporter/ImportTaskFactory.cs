@@ -12,14 +12,24 @@ namespace Hatfield.AquariusDataImporter
 {
     public static class ImportTaskFactory
     {
-        public static string SimpleSutronImportorName = "Simple Sutron Importer";
+        
 
         public static IImportable CreateImportTask(ImportTask taskDomain)
         {
-            if (taskDomain.HandlerName == SimpleSutronImportorName)
+            if (taskDomain.HandlerName == Constants.SimpleSutronImporterName)
             {
                 var deserializedTask = JsonConvert.DeserializeObject<SimpleSutronImportTask>(taskDomain.DefinitionJsonString);
                 if(deserializedTask == null)
+                {
+                    throw new InvalidCastException("System is not able to cast task domain to Simple sutron import task");
+                }
+                return deserializedTask;
+            }
+
+            else if (taskDomain.HandlerName == Constants.FortHillWaterIntakeImporterName)
+            {
+                var deserializedTask = JsonConvert.DeserializeObject<FortHillWaterIntakeImportTask>(taskDomain.DefinitionJsonString);
+                if (deserializedTask == null)
                 {
                     throw new InvalidCastException("System is not able to cast task domain to Simple sutron import task");
                 }
