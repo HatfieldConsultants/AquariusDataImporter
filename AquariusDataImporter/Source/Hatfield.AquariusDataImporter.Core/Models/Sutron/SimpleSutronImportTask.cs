@@ -30,7 +30,7 @@ namespace Hatfield.AquariusDataImporter.Core.Models.Sutron
             Parameters = new List<SutronParameter>();
         }
 
-        public bool IsMatchedDefinition(string fileName)
+        public virtual bool IsMatchedDefinition(string fileName)
         {
             var match = System.Text.RegularExpressions.Regex.Match(fileName, FileNameRegex);
             return (match.Length > 0);

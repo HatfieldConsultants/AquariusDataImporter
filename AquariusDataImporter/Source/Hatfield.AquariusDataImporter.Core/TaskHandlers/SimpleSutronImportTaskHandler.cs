@@ -44,17 +44,20 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
 
             var dataFileList = SutronDataDownloadHelper.FetchDownloadableDataFileList(castedTask.DownloadURL);
 
-            var firstDateAtMidnight = DateTime.Now.AddHours(7).AddMinutes(-castedTask.NumberOfMinuteInThePast.Value);//since the program is run in BC, so we need to add 8 hours to be UTC time
-
-            var filesNeedToImport = dataFileList.Where(x => x.LastModified >= firstDateAtMidnight && castedTask.IsMatchedDefinition(x.FileName));
+            //var firstDateAtMidnight = DateTime.Now.AddHours(7).AddMinutes(-castedTask.NumberOfMinuteInThePast.Value);//since the program is run in BC, so we need to add 8 hours to be UTC time
+            var firstDateAtMidnight = DateTime.Now.AddDays(-4).AddMinutes(-castedTask.NumberOfMinuteInThePast.Value);
+            
+            var filesNeedToImport = dataFileList.Where(x => x.LastModified >= firstDateAtMidnight && castedTask.IsMatchedDefinition(x.FileName)).ToList();
 
             var errorThreshold = 10;
-            
+
+            var columnIndexAndAquariusIdDictionary = GetParametersIndexAquariusIdDictionary(castedTask);
             foreach(var file in filesNeedToImport)
             {
                 try
                 {
                     var dataFileString = SutronDataDownloadHelper.DownloadSingleDataFile(castedTask.DownloadURL, file);
+                    ImportDataToAquarius(dataFileString, castedTask, columnIndexAndAquariusIdDictionary);
                 }
                 catch(Exception ex)
                 {
@@ -84,10 +87,9 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
             
         }
 
-        protected virtual void ImportDataToAquarius(string dataFileString, SimpleSutronImportTask task)
+        protected virtual void ImportDataToAquarius(string dataFileString, SimpleSutronImportTask task, Dictionary<int, long> paramentIdDictionary)
         {
-            var linesOfData = ExtractDataFromDownloadString(dataFileString);
-            var paramentIdDictionary = GetParametersIndexAquariusIdDictionary(task);
+            var linesOfData = ExtractDataFromDownloadString(dataFileString);           
 
             var itemInLine = linesOfData[0].Length;
 
@@ -143,7 +145,7 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
         {
             var parameter = task.Parameters.ToList();
             var dictionary = new Dictionary<int, long>();
-            parameter.ForEach(x => dictionary.Add(x.ColumnIndex, _aquariusAdapter.GetDataSetIdByIdentifier(x.ParameterIdentifier)));
+            parameter.ForEach(x => dictionary.Add(x.ColumnIndex, _aquariusAdapter.GetDataSetIdByIdentifier(x.Identifier)));
 
             return dictionary;
         }

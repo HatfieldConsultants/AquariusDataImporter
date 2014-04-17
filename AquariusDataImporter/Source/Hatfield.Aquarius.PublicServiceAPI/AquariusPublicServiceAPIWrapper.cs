@@ -54,10 +54,11 @@ namespace Hatfield.Aquarius.PublicServiceAPI
                     //fail, could be caused by the expired token
                     //refresh the token and execute the request again
                     string refreshToken = getToken();
+                    _publicServiceToken = refreshToken;
                     string responseString = WebRequestHelper.GenerateRequest(_publicServiceURL + timeSeriesURL, _publicServiceToken, System.Text.Encoding.UTF8);
                     //execute success with the new token
                     //update to the global token variable
-                    _publicServiceToken = refreshToken;
+                    
                     return responseString;
                 }
                 catch (Exception)

@@ -52,11 +52,8 @@ namespace Hatfield.AquariusDataImporter
         }
 
         private static void SaveImportLog(ImportTask task, ImportResult result, ISession dbSession)
-        { 
-            if(result.Success)
-            {
-                task.LastImportTime = DateTime.Now;
-            }
+        {             
+            task.LastImportTime = DateTime.Now;
             task.LastImportLog = result.LogMessage;
 
             try

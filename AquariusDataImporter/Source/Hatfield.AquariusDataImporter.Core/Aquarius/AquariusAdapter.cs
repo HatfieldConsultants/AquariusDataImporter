@@ -51,7 +51,12 @@ namespace Hatfield.AquariusDataImporter.Core.Aquarius
 
         public long GetDataSetIdByIdentifier(string identifier)
         {
-            return _acquictionClient.GetLocationId(_acquisitionServiceToken, identifier);
+            var aquariusId = _acquictionClient.GetTimeSeriesID(_acquisitionServiceToken, identifier);
+            if(aquariusId == 0)
+            {
+                throw new ArgumentException("There is no paremeter: " + identifier + " in Aquarius");
+            }
+            return aquariusId;
         }
 
         public int DeleteTimeSeries(long dataId, DateTime queryFrom, DateTime queryTo)

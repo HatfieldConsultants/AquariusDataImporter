@@ -18,15 +18,19 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
         private Dictionary<string, long> parameterIdDictionary = new Dictionary<string, long>();
 
         public FortHillWaterIntakeSutronImportTaskHandler(IAquariusAdapter aquariusAdapter) : base(aquariusAdapter)
-        { 
-        
+        {
+            _aquariusAdapter = aquariusAdapter;
         }
 
-
-        protected override void ImportDataToAquarius(string dataFileString, SimpleSutronImportTask task)
+        public override Models.ImportResult Import(IImportable task, DateTime? lastImportTime, int interval)
         {
-            var linesOfData = ExtractDataFromDownloadString(dataFileString);
-            var paramentIdDictionary = GetParametersIndexAquariusIdDictionary(task);
+            InitialDataSetIdMapping(task as FortHillWaterIntakeImportTask);
+            return base.Import(task, lastImportTime, interval);
+        }
+
+        protected override void ImportDataToAquarius(string dataFileString, SimpleSutronImportTask task, Dictionary<int, long> paramentIdDictionary)
+        {
+            var linesOfData = ExtractDataFromDownloadString(dataFileString);            
 
             var itemInLine = linesOfData[0].Length;
 
