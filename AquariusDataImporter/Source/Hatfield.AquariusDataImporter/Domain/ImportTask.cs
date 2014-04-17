@@ -12,7 +12,7 @@ namespace Hatfield.AquariusDataImporter.Domain
         public virtual string HandlerName { get; set; }
         public virtual DateTime? LastImportTime { get; set; }
         public virtual string LastImportLog { get; set; }
-        public virtual int Interval { get; set; }
-        public virtual string DefinitionJsonString { get; set; }
+        public virtual int ExecuteInterval { get; set; }
+        public virtual byte[] DefinitionJsonString { get; set; }
     }
 }

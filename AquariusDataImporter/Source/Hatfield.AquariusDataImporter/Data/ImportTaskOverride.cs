@@ -5,7 +5,7 @@ using System.Web;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 using Hatfield.AquariusDataImporter.Domain;
-
+using NHibernate.Type;
 namespace Hatfield.AquariusDataImporter.Data
 {
     public class ImportTaskOverride : IAutoMappingOverride<ImportTask>
@@ -14,7 +14,7 @@ namespace Hatfield.AquariusDataImporter.Data
         {
             mapping.Table("importtask");
             mapping.Id(x => x.Id, "Id");
-            mapping.Map(x => x.DefinitionJsonString).Length(99999);
+            mapping.Map(x => x.DefinitionJsonString).CustomType<BinaryBlobType>();
         }
     }
 }

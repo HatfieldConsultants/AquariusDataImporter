@@ -24,10 +24,10 @@ namespace Hatfield.AquariusDataImporter
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(System.Environment.CurrentDirectory, ("log4net.config"))));
             var log = log4net.LogManager.GetLogger("Application");
 
-            var sessionFactory = CreateSessionFactory();
+            
             log.Debug("Get all tasks from database");
 
-            var dbSession = sessionFactory.OpenSession();
+            var dbSession = CreateSessionFactory().OpenSession();
             var allTasks = dbSession.QueryOver<ImportTask>().List();
             log.Debug("# of tasks " + allTasks.Count);
 
@@ -40,7 +40,7 @@ namespace Hatfield.AquariusDataImporter
                     log.Debug("Create task handler " + taskDomain.HandlerName);
                     var handler = TaskHandlerFactory.CreateTaskHandler(taskDomain.HandlerName);
 
-                    var result = handler.Import(task, taskDomain.LastImportTime, taskDomain.Interval);
+                    var result = handler.Import(task, taskDomain.LastImportTime, taskDomain.ExecuteInterval);
 
                     SaveImportLog(taskDomain, result, dbSession);
                 }
@@ -79,7 +79,8 @@ namespace Hatfield.AquariusDataImporter
             Configuration config = new Configuration().Configure("Hibernate.cfg.xml");
             // load mappings from this assembly
             return Fluently.Configure(config)
-                .Mappings(m => m.AutoMappings.Add(new AutoPersistenceModelGenerator().GenerateDataBaseMapping()))                
+                .Mappings(m => m.AutoMappings.Add(new AutoPersistenceModelGenerator().GenerateDataBaseMapping()))
+                .CurrentSessionContext<WebSessionContext>()
                 .BuildSessionFactory();
         }
     }

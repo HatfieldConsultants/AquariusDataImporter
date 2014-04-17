@@ -24,12 +24,12 @@ DROP TABLE IF EXISTS `importtask`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `importtask` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `DefinitionJsonString` mediumtext,
+  `DefinitionJsonString` longblob,
   `Name` varchar(255) DEFAULT NULL,
   `HandlerName` varchar(255) DEFAULT NULL,
   `LastImportTime` datetime DEFAULT NULL,
-  `LastImportLog` varchar(45) DEFAULT NULL,
-  `Interval` int(11) DEFAULT NULL,
+  `LastImportLog` varchar(255) DEFAULT NULL,
+  `ExecuteInterval` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -18,7 +18,7 @@ namespace Hatfield.AquariusDataImporter
         {
             if (taskDomain.HandlerName == Constants.SimpleSutronImporterName)
             {
-                var deserializedTask = JsonConvert.DeserializeObject<SimpleSutronImportTask>(taskDomain.DefinitionJsonString);
+                var deserializedTask = JsonConvert.DeserializeObject<SimpleSutronImportTask>(System.Text.Encoding.UTF8.GetString(taskDomain.DefinitionJsonString));
                 if(deserializedTask == null)
                 {
                     throw new InvalidCastException("System is not able to cast task domain to Simple sutron import task");
@@ -28,7 +28,7 @@ namespace Hatfield.AquariusDataImporter
 
             else if (taskDomain.HandlerName == Constants.FortHillWaterIntakeImporterName)
             {
-                var deserializedTask = JsonConvert.DeserializeObject<FortHillWaterIntakeImportTask>(taskDomain.DefinitionJsonString);
+                var deserializedTask = JsonConvert.DeserializeObject<FortHillWaterIntakeImportTask>(System.Text.Encoding.UTF8.GetString(taskDomain.DefinitionJsonString));
                 if (deserializedTask == null)
                 {
                     throw new InvalidCastException("System is not able to cast task domain to Simple sutron import task");
