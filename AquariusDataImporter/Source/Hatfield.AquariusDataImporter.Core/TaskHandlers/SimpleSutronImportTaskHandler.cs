@@ -44,8 +44,8 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
 
             var dataFileList = SutronDataDownloadHelper.FetchDownloadableDataFileList(castedTask.DownloadURL);
 
-            //var firstDateAtMidnight = DateTime.Now.AddHours(7).AddMinutes(-castedTask.NumberOfMinuteInThePast.Value);//since the program is run in BC, so we need to add 8 hours to be UTC time
-            var firstDateAtMidnight = DateTime.Now.AddDays(-4).AddMinutes(-castedTask.NumberOfMinuteInThePast.Value);
+            var firstDateAtMidnight = DateTime.Now.AddHours(7).AddMinutes(-castedTask.NumberOfMinuteInThePast.Value);//since the program is run in BC, so we need to add 8 hours to be UTC time
+            
             
             var filesNeedToImport = dataFileList.Where(x => x.LastModified >= firstDateAtMidnight && castedTask.IsMatchedDefinition(x.FileName)).ToList();
 
