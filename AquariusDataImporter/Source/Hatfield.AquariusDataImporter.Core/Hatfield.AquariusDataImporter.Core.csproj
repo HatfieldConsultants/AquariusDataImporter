@@ -54,6 +54,7 @@
     <Compile Include="Aquarius\AquariusAdapter.cs" />
     <Compile Include="Aquarius\IAquariusAdapter.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Helpers\OptimumDataDownloadHelper.cs" />
     <Compile Include="Helpers\SutronDataDownloadHelper.cs" />
     <Compile Include="IImportable.cs" />
     <Compile Include="IImportTaskHandler.cs" />
@@ -61,6 +62,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\ImportResult.cs" />
+    <Compile Include="Models\Optimum\DataLoggerInfo.cs" />
+    <Compile Include="Models\Optimum\InputInfo.cs" />
+    <Compile Include="Models\Optimum\OptimumImportTask.cs" />
+    <Compile Include="Models\Optimum\OptimumParameter.cs" />
     <Compile Include="Models\Sutron\FortHillWaterIntakeImportTask.cs" />
     <Compile Include="Models\Sutron\SimpleSutronImportTask.cs" />
     <Compile Include="Models\Sutron\SutronParameter.cs" />
@@ -72,6 +77,7 @@
     </Compile>
     <Compile Include="TaskHandlerFactory.cs" />
     <Compile Include="TaskHandlers\FortHillWaterIntakeSutronImportTaskHandler.cs" />
+    <Compile Include="TaskHandlers\OptimumImportTaskHandler.cs" />
     <Compile Include="TaskHandlers\SimpleSutronImportTaskHandler.cs" />
   </ItemGroup>
   <ItemGroup>

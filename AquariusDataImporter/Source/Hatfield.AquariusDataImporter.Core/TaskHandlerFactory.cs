@@ -20,6 +20,10 @@ namespace Hatfield.AquariusDataImporter.Core
             {
                 return new FortHillWaterIntakeSutronImportTaskHandler(new AquariusAdapter());
             }
+            else if (handlerName == Constants.OptimumImporterName)
+            {
+                return new OptimumImportTaskHandler(new AquariusAdapter());
+            }
             return null;
         }
     }

@@ -65,6 +65,7 @@ namespace Hatfield.AquariusDataImporter
             catch(Exception ex)
             {
                 dbSession.Transaction.Rollback();
+                throw ex;
             }
             
         }

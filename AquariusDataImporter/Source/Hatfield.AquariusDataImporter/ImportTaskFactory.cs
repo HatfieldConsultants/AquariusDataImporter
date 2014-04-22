@@ -5,6 +5,7 @@ using System.Text;
 using Hatfield.AquariusDataImporter.Core;
 using Hatfield.AquariusDataImporter.Core.Models;
 using Hatfield.AquariusDataImporter.Core.Models.Sutron;
+using Hatfield.AquariusDataImporter.Core.Models.Optimum;
 using Hatfield.AquariusDataImporter.Domain;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
@@ -34,10 +35,22 @@ namespace Hatfield.AquariusDataImporter
                 var deserializedTask = JsonConvert.DeserializeObject<FortHillWaterIntakeImportTask>(resultString);
                 if (deserializedTask == null)
                 {
-                    throw new InvalidCastException("System is not able to cast task domain to Simple sutron import task");
+                    throw new InvalidCastException("System is not able to cast task domain to Forthill water intake import task");
                 }
                 return deserializedTask;
             }
+
+            else if (taskDomain.HandlerName == Constants.OptimumImporterName)
+            {
+                var resultString = EscapeRegexString(System.Text.Encoding.UTF8.GetString(taskDomain.DefinitionJsonString));
+                var deserializedTask = JsonConvert.DeserializeObject<OptimumImportTask>(resultString);
+                if (deserializedTask == null)
+                {
+                    throw new InvalidCastException("System is not able to cast task domain to Optimum data import task");
+                }
+                return deserializedTask;
+            }
+
             return null;
         }
 

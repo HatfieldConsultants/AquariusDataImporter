@@ -9,5 +9,6 @@ namespace Hatfield.AquariusDataImporter.Core
     {
         public static string SimpleSutronImporterName = "Simple Sutron Importer";
         public static string FortHillWaterIntakeImporterName = "Fort Hill Water Intake Importer";
+        public static string OptimumImporterName = "Optimum Data Importer";
     }
 }
