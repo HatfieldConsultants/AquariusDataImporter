@@ -86,19 +86,38 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
         private void ImportCSVDataToAquarius(OptimumParameter optimumParameter, string csvString)
         {
             var aquariusId = _aquariusAdapter.GetDataSetIdByIdentifier(optimumParameter.AquariusDatasetIdentifier);
-            var lines = csvString.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            var lines = csvString.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
             var headers = lines[0].Split(',').ToList();
+
             var dateTimeColumnIndex = headers.IndexOf(Constants.DateTimeHeaderText);
+
+            if(dateTimeColumnIndex == -1)
+            {
+                throw new IndexOutOfRangeException("Can not find date time header in the download csv for " + optimumParameter.AquariusDatasetIdentifier);
+            }
             var valueColumnIndex = headers.IndexOf(Constants.MeasureMentHeaderText);
 
-            for(int i = 1; i < lines.Length; i++)
+            if(valueColumnIndex == -1)
             {
-                var values = lines[i].Split(',');
-                var dateTime = DateTime.Parse(values[dateTimeColumnIndex]);
-                var actualValue = string.IsNullOrEmpty(values[valueColumnIndex]) ? null : (double?)double.Parse(values[valueColumnIndex]);
-
-                _aquariusAdapter.PersistTimeSeriesData(aquariusId, AquariusHelper.ConstructAquariusInsertString(dateTime, 0, actualValue));
+                throw new IndexOutOfRangeException("Can not find measurement header in the download csv for " + optimumParameter.AquariusDatasetIdentifier);
             }
+
+            try
+            {
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    var values = lines[i].Split(new string[] { "," }, StringSplitOptions.None);
+                    var dateTime = DateTime.Parse(values[dateTimeColumnIndex]);
+                    var actualValue = string.IsNullOrEmpty(values[valueColumnIndex]) ? null : (double?)double.Parse(values[valueColumnIndex]);
+
+                    _aquariusAdapter.PersistTimeSeriesData(aquariusId, AquariusHelper.ConstructAquariusInsertString(dateTime, 0, actualValue));
+                } 
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+                      
             
 
 

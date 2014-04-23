@@ -14,6 +14,7 @@ using Hatfield.AquariusDataImporter.Domain;
 using Hatfield.AquariusDataImporter.Core;
 using Hatfield.AquariusDataImporter.Core.Models;
 using System;
+using System.Linq;
 
 namespace Hatfield.AquariusDataImporter
 {
