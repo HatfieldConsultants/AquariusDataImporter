@@ -49,8 +49,9 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                         {
                             continue;
                         }
-                        var appendDataString = ConstructAquariusInsertString(line[1],
+                        var appendDataString = AquariusHelper.ConstructAquariusInsertString(line[1],
                                                                              line[2],
+                                                                             -7,
                                                                              ToNullable<double>(line[i]));
                         if (!string.IsNullOrEmpty(appendDataString))
                         {
@@ -88,8 +89,8 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                 {
                     var BALessThan250 = (stationATSS.Value < 250) ? (stationBTSS.Value - stationATSS.Value) : 0;
                     var BALargerThan250 = (stationATSS.Value > 250) ? ((stationBTSS.Value - stationATSS.Value) * 1.1) + 10 : 0;
-                    _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLess250BAIdentifier], ConstructAquariusInsertString(lineOfData[1], lineOfData[2], BALessThan250));
-                    _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLarger250BAIdentifier], ConstructAquariusInsertString(lineOfData[1], lineOfData[2], BALargerThan250));
+                    _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLess250BAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, BALessThan250));
+                    _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLarger250BAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, BALargerThan250));
                 }
                 if (stationCTSS.Value.HasValue)
                 {
@@ -97,8 +98,8 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                     var CALargerThan250 = (stationATSS.Value > 250) ? ((stationCTSS.Value - stationATSS.Value) * 1.1) + 10 : 0;
 
 
-                    _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLess250CAIdentifier], ConstructAquariusInsertString(lineOfData[1], lineOfData[2], CALessThan250));
-                    _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLarger250CAIdentifier], ConstructAquariusInsertString(lineOfData[1], lineOfData[2], CALargerThan250));
+                    _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLess250CAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, CALessThan250));
+                    _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLarger250CAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, CALargerThan250));
                 }
 
 

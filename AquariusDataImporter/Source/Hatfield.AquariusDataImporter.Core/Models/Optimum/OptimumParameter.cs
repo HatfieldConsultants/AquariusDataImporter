@@ -9,5 +9,6 @@ namespace Hatfield.AquariusDataImporter.Core.Models.Optimum
     {
         public string OptimumInputName { get; set; }
         public string AquariusDatasetIdentifier { get; set; }
+        
     }
 }

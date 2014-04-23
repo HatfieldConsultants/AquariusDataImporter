@@ -13,7 +13,7 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
 {
     public class OptimumImportTaskHandler : IImportTaskHandler
     {
-        private static readonly ILog log = LogManager.GetLogger("Application");
+        private static readonly ILog log = LogManager.GetLogger("Application");        
 
         private IAquariusAdapter _aquariusAdapter;
 
@@ -41,7 +41,67 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                 };
             }
 
-            throw new NotImplementedException();
+            var errorThredHold = 10;
+            var importMessageBuilder = new StringBuilder();
+
+            try
+            {
+                var endTime = DateTime.Now;
+                var startTime = DateTime.Now.AddDays(-castedTask.NumberOfDayPriorToToday);
+
+                var dataLogger = OptimumDataDownloadHelper.GetDataLoggersBySiteName(castedTask.StationName);
+                var inputInfoOfDataLogger = OptimumDataDownloadHelper.GetInputInfoOfDataLogger(dataLogger);
+                foreach (var parameter in castedTask.Parameters)
+                {
+                    var matchedInputInfo = inputInfoOfDataLogger.Where(x => x.Label == parameter.OptimumInputName).First();
+                    var csvString = OptimumDataDownloadHelper.FetchCSVForInput(dataLogger, matchedInputInfo, startTime, endTime);
+
+                    ImportCSVDataToAquarius(parameter, csvString);
+                }
+
+                importMessageBuilder.Append("Import data success");
+                
+            }
+            catch(Exception ex)
+            {
+                importMessageBuilder.Append("Error: " + ex.Message);
+                errorThredHold--;
+                if(errorThredHold < 0)
+                {
+                    return new ImportResult { 
+                        Success = false,
+                        LogMessage = importMessageBuilder.ToString()
+                    };
+                }
+            }
+
+            return new ImportResult
+            {
+                Success = true,
+                LogMessage = importMessageBuilder.ToString()
+            };
+        }
+
+
+        private void ImportCSVDataToAquarius(OptimumParameter optimumParameter, string csvString)
+        {
+            var aquariusId = _aquariusAdapter.GetDataSetIdByIdentifier(optimumParameter.AquariusDatasetIdentifier);
+            var lines = csvString.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            var headers = lines[0].Split(',').ToList();
+            var dateTimeColumnIndex = headers.IndexOf(Constants.DateTimeHeaderText);
+            var valueColumnIndex = headers.IndexOf(Constants.MeasureMentHeaderText);
+
+            for(int i = 1; i < lines.Length; i++)
+            {
+                var values = lines[i].Split(',');
+                var dateTime = DateTime.Parse(values[dateTimeColumnIndex]);
+                var actualValue = string.IsNullOrEmpty(values[valueColumnIndex]) ? null : (double?)double.Parse(values[valueColumnIndex]);
+
+                _aquariusAdapter.PersistTimeSeriesData(aquariusId, AquariusHelper.ConstructAquariusInsertString(dateTime, 0, actualValue));
+            }
+            
+
+
         }
     }
 }

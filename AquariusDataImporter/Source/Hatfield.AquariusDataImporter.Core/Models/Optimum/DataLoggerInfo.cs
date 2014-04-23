@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Hatfield.AquariusDataImporter.Core.Models.Optimum
 {
-    internal class DataLoggerInfo
+    public class DataLoggerInfo
     {
         /*
          * <datalogger-id>18</datalogger-id>

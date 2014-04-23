@@ -54,6 +54,7 @@
     <Compile Include="Aquarius\AquariusAdapter.cs" />
     <Compile Include="Aquarius\IAquariusAdapter.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Helpers\AquariusHelper.cs" />
     <Compile Include="Helpers\OptimumDataDownloadHelper.cs" />
     <Compile Include="Helpers\SutronDataDownloadHelper.cs" />
     <Compile Include="IImportable.cs" />

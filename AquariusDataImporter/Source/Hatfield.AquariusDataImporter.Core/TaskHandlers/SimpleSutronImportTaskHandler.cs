@@ -108,8 +108,9 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                         {
                             continue;
                         }
-                        var appendDataString = ConstructAquariusInsertString(line[1],
+                        var appendDataString = AquariusHelper.ConstructAquariusInsertString(line[1],
                                                                              line[2],
+                                                                             -7,
                                                                              ToNullable<double>(line[i]));
                         if(!string.IsNullOrEmpty(appendDataString))
                         {
@@ -150,27 +151,7 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
             return dictionary;
         }
 
-        /// <summary>
-        /// The aquarius append format should be "YYYY-MM-DD HH:MM:SS, nnn.mmm, fff, ggg, iii, aaa, note"
-        /// </summary>
-        /// <param name="date"></param>
-        /// <param name="time"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected string ConstructAquariusInsertString(string date, string time, double? value)
-        {
-            //we need to save the collect time to Aquarius, and the data is collect in Alberta
-            //convert UTC time to Alberta time is -7 hours
-            var dateTimeValue = DateTime.Parse(date + " " + time).AddHours(-7);
-            var dateTimeString = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss");
-            string appendDataFormat = "{0}, {1},,,,,\n";
-            if (string.IsNullOrEmpty(date) || string.IsNullOrEmpty(time) || !value.HasValue)
-            {
-                return string.Empty;
-            }
-            //here need to construct the aquarius append string, reference aquarius acqusition API manual
-            return string.Format(appendDataFormat, dateTimeString, value);
-        }
+        
 
         protected static Nullable<T> ToNullable<T>(string s) where T : struct
         {
