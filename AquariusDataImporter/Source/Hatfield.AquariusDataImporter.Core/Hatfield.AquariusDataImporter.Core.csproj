@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="TaskHandlerFactory.cs" />
     <Compile Include="TaskHandlers\FortHillWaterIntakeSutronImportTaskHandler.cs" />
+    <Compile Include="TaskHandlers\GoesDataImportTaskHandler.cs" />
     <Compile Include="TaskHandlers\OptimumImportTaskHandler.cs" />
     <Compile Include="TaskHandlers\SimpleSutronImportTaskHandler.cs" />
   </ItemGroup>
@@ -143,7 +144,9 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\Goes\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hatfield.Aquarius.PublicServiceAPI\Hatfield.Aquarius.PublicServiceAPI.csproj">
       <Project>{52F08CF3-A36C-418B-8AE6-6B7347C718A8}</Project>

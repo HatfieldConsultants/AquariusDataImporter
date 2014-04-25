@@ -51,6 +51,11 @@ namespace Hatfield.AquariusDataImporter
                 return deserializedTask;
             }
 
+            else if(taskDomain.HandlerName == Constants.GoesDataImporterName)
+            {
+                throw new NotSupportedException("Goes data source is not support yet");
+            }
+
             return null;
         }
 

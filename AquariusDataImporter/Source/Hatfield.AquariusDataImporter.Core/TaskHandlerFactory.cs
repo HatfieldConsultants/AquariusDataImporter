@@ -24,6 +24,10 @@ namespace Hatfield.AquariusDataImporter.Core
             {
                 return new OptimumImportTaskHandler(new AquariusAdapter());
             }
+            else if (handlerName == Constants.GoesDataImporterName)
+            {
+                return new GoesDataImportTaskHandler();
+            }
             return null;
         }
     }
