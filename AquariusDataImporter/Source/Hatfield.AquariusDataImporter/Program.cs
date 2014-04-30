@@ -22,17 +22,19 @@ namespace Hatfield.AquariusDataImporter
     {
         static void Main(string[] args)
         {
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(System.Environment.CurrentDirectory, ("log4net.config"))));
+            var path = System.Configuration.ConfigurationManager.AppSettings["ProgramFolder"];
+            //XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(System.Environment.CurrentDirectory, ("log4net.config"))));
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(path, ("log4net.config"))));
             var log = log4net.LogManager.GetLogger("Application");
 
             
             log.Debug("Get all tasks from database");
 
-            var dbSession = CreateSessionFactory().OpenSession();
+            var dbSession = CreateSessionFactory(path).OpenSession();
             var allTasks = dbSession.QueryOver<ImportTask>().List();
             log.Debug("# of tasks " + allTasks.Count);
 
-            foreach(var taskDomain in allTasks)
+            foreach (var taskDomain in allTasks)
             {
                 try
                 {
@@ -44,6 +46,8 @@ namespace Hatfield.AquariusDataImporter
                     var result = handler.Import(task, taskDomain.LastImportTime, taskDomain.ExecuteInterval);
 
                     SaveImportLog(taskDomain, result, dbSession);
+
+                    log.Info("Data importer runs successfully");
                 }
                 catch(Exception ex)
                 {
@@ -72,10 +76,10 @@ namespace Hatfield.AquariusDataImporter
         }
 
         // Returns our session factory
-        public static ISessionFactory CreateSessionFactory()
+        public static ISessionFactory CreateSessionFactory(string path)
         {
             // read hibernate.cfg.xml
-            Configuration config = new Configuration().Configure("Hibernate.cfg.xml");
+            Configuration config = new Configuration().Configure(Path.Combine(path, "Hibernate.cfg.xml"));
             // load mappings from this assembly
             return Fluently.Configure(config)
                 .Mappings(m => m.AutoMappings.Add(new AutoPersistenceModelGenerator().GenerateDataBaseMapping()))
