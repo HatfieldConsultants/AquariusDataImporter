@@ -88,18 +88,27 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                 if (stationBTSS.Value.HasValue)
                 {
                     var BALessThan250 = (stationATSS.Value < 250) ? (stationBTSS.Value - stationATSS.Value) : 0;
-                    var BALargerThan250 = (stationATSS.Value > 250) ? ((stationBTSS.Value - stationATSS.Value) * 1.1) + 10 : 0;
+                    var BALargerThan250 = (stationATSS.Value > 250) ? ((stationBTSS.Value - stationATSS.Value * 1.1)) + 10 : 0;
                     _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLess250BAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, BALessThan250));
                     _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLarger250BAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, BALargerThan250));
                 }
                 if (stationCTSS.Value.HasValue)
                 {
                     var CALessThan250 = (stationATSS.Value < 250) ? (stationCTSS.Value - stationATSS.Value) : 0;
-                    var CALargerThan250 = (stationATSS.Value > 250) ? ((stationCTSS.Value - stationATSS.Value) * 1.1) + 10 : 0;
+                    var CALargerThan250 = (stationATSS.Value > 250) ? ((stationCTSS.Value - stationATSS.Value * 1.1)) + 10 : 0;
 
 
                     _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLess250CAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, CALessThan250));
                     _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLarger250CAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, CALargerThan250));
+
+                    if (CALargerThan250 > 10)
+                    {
+                        log.Error(lineOfData[1] + " " + lineOfData[2] + "(Trans C - Trans A *1.1) + 10 is larger than 10, please check if Aquarius has sent out notification");
+                    }
+                    else
+                    {
+                        log.Debug(lineOfData[1] + " " + lineOfData[2] + "(Trans C - Trans A *1.1) + 10 is less than 10, no notification should be sent out.");
+                    }
                 }
 
 

@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using log4net;
 using HtmlAgilityPack;
+using System.Net;
 
 namespace Hatfield.AquariusDataImporter.Core.Helpers
 {
     public static class SutronDataDownloadHelper
     {
         private static readonly ILog log = LogManager.GetLogger("Application");
-
+        private static string SutronUserName = System.Configuration.ConfigurationManager.AppSettings["SutronUserName"];
+        private static string SutronPassword = System.Configuration.ConfigurationManager.AppSettings["SutronPassword"];
+            
         public static IEnumerable<SutronDataFile> FetchDownloadableDataFileList(string rootUrl)
         {
             if (!rootUrl.EndsWith("/"))
@@ -21,6 +24,7 @@ namespace Hatfield.AquariusDataImporter.Core.Helpers
             using (LongTimeoutWebClient webClient = new LongTimeoutWebClient())
             {
                 webClient.Encoding = Encoding.UTF8;
+                webClient.Credentials = new NetworkCredential(SutronUserName, SutronPassword);
                 log.InfoFormat("Downloading file list from '{0}' ...", rootUrl);
                 rootHtml = webClient.DownloadString(rootUrl);
             }
@@ -40,6 +44,7 @@ namespace Hatfield.AquariusDataImporter.Core.Helpers
                 using (LongTimeoutWebClient webClient = new LongTimeoutWebClient())
                 {
                     webClient.Encoding = Encoding.UTF8;
+                    webClient.Credentials = new NetworkCredential(SutronUserName, SutronPassword);
                     string fileUrl = rootUrl + dataFile.FileName;
                     log.InfoFormat("Downloading file list from '{0}' ...", fileUrl);
                     return webClient.DownloadString(fileUrl);
@@ -85,6 +90,15 @@ namespace Hatfield.AquariusDataImporter.Core.Helpers
                     string fileName = rowCells[1].InnerText.Trim();
                     string createdDate = rowCells[2].InnerText.Trim();
                     string size = rowCells[3].InnerText.Trim();
+
+                    if (size.Contains("K"))
+                    {
+                        var tempValue = double.MinValue;
+                        var sizeString = size.Substring(0, size.LastIndexOf("K"));
+                        tempValue = double.Parse(sizeString);
+                        size = ((int)(tempValue * 1024)).ToString();
+
+                    }
 
                     long sz = long.MinValue;
                     if (long.TryParse(size, out sz) && fileName.EndsWith(".csv", StringComparison.InvariantCultureIgnoreCase))

@@ -8,6 +8,6 @@ namespace Hatfield.AquariusDataImporter.Core.Models.Sutron
     public class SutronParameter
     {
         public string Identifier { get; set; }
-        public int ColumnIndex { get; set; }//parameter's column index in the data file, zero based
+        public int? ColumnIndex { get; set; }//parameter's column index in the data file, zero based
     }
 }
