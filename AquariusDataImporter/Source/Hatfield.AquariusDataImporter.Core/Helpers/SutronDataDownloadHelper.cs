@@ -5,6 +5,7 @@ using System.Text;
 using log4net;
 using HtmlAgilityPack;
 using System.Net;
+using System.IO;
 
 namespace Hatfield.AquariusDataImporter.Core.Helpers
 {
@@ -27,6 +28,9 @@ namespace Hatfield.AquariusDataImporter.Core.Helpers
                 webClient.Credentials = new NetworkCredential(SutronUserName, SutronPassword);
                 log.InfoFormat("Downloading file list from '{0}' ...", rootUrl);
                 rootHtml = webClient.DownloadString(rootUrl);
+                //var filePath = Path.Combine(@"C:\Users\zlu\Documents\Code\WRD\AquariusDataImporter\Source\Hatfield.AquariusDataImporter\Html", DateTime.Now.ToString("yyyy-MMM-dd-mm-ss") + DateTime.Now.Ticks +".html");
+                //File.WriteAllText(filePath, rootHtml);
+                
             }
 
             // -- parse the file list

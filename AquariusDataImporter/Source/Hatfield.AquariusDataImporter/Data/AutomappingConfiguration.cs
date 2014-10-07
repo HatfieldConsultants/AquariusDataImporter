@@ -14,7 +14,7 @@ namespace Hatfield.AquariusDataImporter.Data
         public override bool ShouldMap(Type type)
         {
 
-            var shouldMap = type.FullName == "Hatfield.AquariusDataImporter.Domain.ImportTask";
+            var shouldMap = type.FullName.StartsWith("Hatfield.AquariusDataImporter.Domain");
             return shouldMap;
 
         }

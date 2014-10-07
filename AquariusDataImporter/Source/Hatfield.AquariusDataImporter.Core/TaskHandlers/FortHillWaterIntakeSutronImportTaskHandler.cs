@@ -28,6 +28,11 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
             return base.Import(task, lastImportTime, interval);
         }
 
+        protected override bool ShouldExecute(DateTime? lastImportTime, int interval)
+        {
+            return true;
+        }
+
         protected override void ImportDataToAquarius(string dataFileString, SimpleSutronImportTask task, Dictionary<int, long> paramentIdDictionary)
         {
             var linesOfData = ExtractDataFromDownloadString(dataFileString);            
@@ -101,13 +106,17 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                     _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLess250CAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, CALessThan250));
                     _aquariusAdapter.PersistTimeSeriesData(parameterIdDictionary[task.TSSLarger250CAIdentifier], AquariusHelper.ConstructAquariusInsertString(lineOfData[1], lineOfData[2], -7, CALargerThan250));
 
-                    if (CALargerThan250 > 10)
+                    if (CALargerThan250 >= 10)
                     {
                         log.Error(lineOfData[1] + " " + lineOfData[2] + "(Trans C - Trans A *1.1) + 10 is larger than 10, please check if Aquarius has sent out notification");
                     }
                     else
                     {
                         log.Debug(lineOfData[1] + " " + lineOfData[2] + "(Trans C - Trans A *1.1) + 10 is less than 10, no notification should be sent out.");
+                    }
+                    if(CALessThan250 >= 25)
+                    {
+                        log.Error(lineOfData[1] + " " + lineOfData[2] + "(Trans C - Trans A) is larger than 25, please check if Aquarius has sent out notification");
                     }
                 }
 

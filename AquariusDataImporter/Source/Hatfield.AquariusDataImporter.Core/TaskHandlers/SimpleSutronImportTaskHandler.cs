@@ -8,7 +8,8 @@ using Hatfield.AquariusDataImporter.Core.Models;
 using log4net;
 using Hatfield.AquariusDataImporter.Core.Aquarius;
 using Hatfield.AquariusDataImporter.Core.Helpers;
-
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
 {
@@ -33,23 +34,39 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
             }
 
             //still within interval
-            //if(lastImportTime.HasValue && (DateTime.Now < lastImportTime.Value.AddMinutes(interval)))
-            //{
-            //    return new ImportResult { 
-            //        Success = false,
-            //        LogMessage = "Task still within the execute interval, skip"
-            //    };
-            //}
+            if(!ShouldExecute(lastImportTime, interval))
+            {
+                return new ImportResult
+                {
+                    Success = false,
+                    LogMessage = "Task still within the execute interval, skip"
+                };
+            }
 
-            
-
-            var dataFileList = SutronDataDownloadHelper.FetchDownloadableDataFileList(castedTask.DownloadURL);
 
             var firstDateAtMidnight = DateTime.Now.AddHours(7).AddMinutes(-castedTask.NumberOfMinuteInThePast.Value);//since the program is run in BC, so we need to add 8 hours to be UTC time
-            
-            
-            var filesNeedToImport = dataFileList.Where(x => x.LastModified >= firstDateAtMidnight && castedTask.IsMatchedDefinition(x.FileName)).ToList();
 
+            IEnumerable<SutronDataFile> dataFileList = null;
+
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            if (Cache.SutronDataFileCache == null)
+            {
+                var downloadDataFileListTask = Task.Factory.StartNew(() => SutronDataDownloadHelper.FetchDownloadableDataFileList(castedTask.DownloadURL));
+                Task.WaitAll(downloadDataFileListTask);
+                dataFileList = downloadDataFileListTask.Result;
+                Cache.SutronDataFileCache = dataFileList;
+            }
+            else
+            {
+                dataFileList = Cache.SutronDataFileCache;
+            }
+
+            
+
+            var filesNeedToImport = dataFileList.Where(x => x.LastModified >= firstDateAtMidnight && castedTask.IsMatchedDefinition(x.FileName)).ToList();
+            var numberOfFileNeedToImport = filesNeedToImport.Count;
             var errorThreshold = 10;
 
             Dictionary<int, long> columnIndexAndAquariusIdDictionary = null;
@@ -65,41 +82,48 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
                     LogMessage = "Task execute fail. " + ex.Message
                 };
             }
+
             
-            foreach(var file in filesNeedToImport)
-            {
-                try
-                {
-                    var dataFileString = SutronDataDownloadHelper.DownloadSingleDataFile(castedTask.DownloadURL, file);
-                    ImportDataToAquarius(dataFileString, castedTask, columnIndexAndAquariusIdDictionary);
-                    numberOfFileBeenImport++;
-                }
-                catch(Exception ex)
-                {
-                    errorThreshold--;
-                    if (errorThreshold < 0)
+
+            Parallel.ForEach(filesNeedToImport, file => {
+                    try
                     {
-                        return new ImportResult
-                        {
-                            Success = false,
-                            LogMessage = "Task execute fail"
-                        };
+                        Console.WriteLine(numberOfFileBeenImport + "/" + numberOfFileNeedToImport + " files has been imported");
+                        var dataFileString = SutronDataDownloadHelper.DownloadSingleDataFile(castedTask.DownloadURL, file);
+                        ImportDataToAquarius(dataFileString, castedTask, columnIndexAndAquariusIdDictionary);
+
+                        numberOfFileBeenImport++;
                     }
-                    else
+                    catch(Exception ex)
                     {
                         log.Warn("Importer fail try to continue" + ex.StackTrace);
-                        continue;
+                        errorThreshold--;
                     }
-                }
-                
-            }
+        
+            });
 
-            return new ImportResult
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            Console.WriteLine("It takes " + ts.Seconds + " seconds to import when asynchroinization");
+
+            if (errorThreshold < 0)
             {
-                Success = true,
-                LogMessage = "Task execute successfully. " + numberOfFileBeenImport + " files have been imported to Aquarius."
-            };
-            
+                return new ImportResult
+                {
+                    Success = false,
+                    LogMessage = "Task execute fail"
+                };
+            }
+            else
+            {
+                return new ImportResult
+                {
+                    Success = true,
+                    LogMessage = "Task execute successfully. " + numberOfFileBeenImport + " files have been imported to Aquarius."
+                };
+
+            }
+                        
         }
 
         protected virtual void ImportDataToAquarius(string dataFileString, SimpleSutronImportTask task, Dictionary<int, long> paramentIdDictionary)
@@ -159,11 +183,32 @@ namespace Hatfield.AquariusDataImporter.Core.TaskHandlers
         /// <returns></returns>
         protected Dictionary<int, long> GetParametersIndexAquariusIdDictionary(SimpleSutronImportTask task)
         {
-            var parameter = task.Parameters.Where(x => x.ColumnIndex.HasValue).ToList();
+            var parameters = task.Parameters.Where(x => x.ColumnIndex.HasValue).ToList();
             var dictionary = new Dictionary<int, long>();
-            parameter.ForEach(x => dictionary.Add(x.ColumnIndex.Value, _aquariusAdapter.GetDataSetIdByIdentifier(x.Identifier)));
+            Parallel.ForEach(parameters, parameter => {
+                var aquariusId = _aquariusAdapter.GetDataSetIdByIdentifier(parameter.Identifier);
+                lock(dictionary)
+                {
+                    dictionary.Add(parameter.ColumnIndex.Value, aquariusId);    
+                }
+            });
+            
 
             return dictionary;
+        }
+
+
+        protected virtual bool ShouldExecute(DateTime? lastImportTime, int interval)
+        {
+            if (lastImportTime.HasValue && (DateTime.Now < lastImportTime.Value.AddMinutes(interval)))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        
         }
 
         

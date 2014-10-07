@@ -71,6 +71,8 @@
     <Compile Include="Data\AutomappingConfiguration.cs" />
     <Compile Include="Data\AutoPersistenceModelGenerator.cs" />
     <Compile Include="Data\ImportTaskOverride.cs" />
+    <Compile Include="Data\ParameterOverride.cs" />
+    <Compile Include="Domain\Parameter.cs" />
     <Compile Include="Domain\IDomainModel.cs" />
     <Compile Include="Domain\ImportTask.cs" />
     <Compile Include="ImportTaskFactory.cs" />

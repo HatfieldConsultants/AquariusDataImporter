@@ -15,6 +15,7 @@ using Hatfield.AquariusDataImporter.Core;
 using Hatfield.AquariusDataImporter.Core.Models;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Hatfield.AquariusDataImporter
 {
@@ -32,6 +33,10 @@ namespace Hatfield.AquariusDataImporter
 
             var dbSession = CreateSessionFactory(path).OpenSession();
             var allTasks = dbSession.QueryOver<ImportTask>().List();
+            var allParameters = dbSession.QueryOver<Parameter>().List();
+
+            bool allGOESTasksImportSuccess = true;//this variable is used to check if all GOES tasks import success
+
             log.Debug("# of tasks " + allTasks.Count);
 
             foreach (var taskDomain in allTasks)
@@ -39,21 +44,35 @@ namespace Hatfield.AquariusDataImporter
                 try
                 {
                     log.Debug("Create task " + taskDomain.Name);
-                    var task = ImportTaskFactory.CreateImportTask(taskDomain);
+                    var task = ImportTaskFactory.CreateImportTask(taskDomain, allParameters);
                     log.Debug("Create task handler " + taskDomain.HandlerName);
                     var handler = TaskHandlerFactory.CreateTaskHandler(taskDomain.HandlerName);
 
                     var result = handler.Import(task, taskDomain.LastImportTime, taskDomain.ExecuteInterval);
 
+                    if(taskDomain.HandlerName == Constants.GoesDataImporterName && !result.Success)
+                    {
+                        allGOESTasksImportSuccess = false;
+                    }
+
                     SaveImportLog(taskDomain, result, dbSession);
 
-                    log.Info("Data importer runs successfully");
+                    
                 }
                 catch(Exception ex)
                 {
                     log.Error("handle task" + taskDomain.Name + "fail due to " + ex.StackTrace);
                 }
             }
+
+            //if all GOES tasks import successfully
+            //clean the folder
+            //if(allGOESTasksImportSuccess)
+            //{
+            //    Hatfield.AquariusDataImporter.Core.Helpers.GoesDataHelper.MoveProcessedFile(true, log);
+            //}
+
+            log.Info("Data importer runs successfully");
         }
 
         private static void SaveImportLog(ImportTask task, ImportResult result, ISession dbSession)

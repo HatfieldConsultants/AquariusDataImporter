@@ -42,6 +42,10 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.FtpClient">
+      <HintPath>..\..\packages\System.Net.FtpClient.1.0.5281.14359\lib\net40\System.Net.FtpClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
@@ -53,8 +57,10 @@
   <ItemGroup>
     <Compile Include="Aquarius\AquariusAdapter.cs" />
     <Compile Include="Aquarius\IAquariusAdapter.cs" />
+    <Compile Include="Cache.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Helpers\AquariusHelper.cs" />
+    <Compile Include="Helpers\GoesDataHelper.cs" />
     <Compile Include="Helpers\OptimumDataDownloadHelper.cs" />
     <Compile Include="Helpers\SutronDataDownloadHelper.cs" />
     <Compile Include="IImportable.cs" />
@@ -62,6 +68,9 @@
     <Compile Include="LongTimeoutWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Models\Goes\GoesDataImportTask.cs" />
+    <Compile Include="Models\Goes\GoesDataParameter.cs" />
+    <Compile Include="Models\Goes\GoesValueData.cs" />
     <Compile Include="Models\ImportResult.cs" />
     <Compile Include="Models\Optimum\DataLoggerInfo.cs" />
     <Compile Include="Models\Optimum\InputInfo.cs" />
@@ -144,9 +153,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Goes\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Hatfield.Aquarius.PublicServiceAPI\Hatfield.Aquarius.PublicServiceAPI.csproj">
       <Project>{52F08CF3-A36C-418B-8AE6-6B7347C718A8}</Project>
