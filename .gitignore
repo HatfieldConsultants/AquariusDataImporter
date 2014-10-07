@@ -2,3 +2,6 @@ bin/
 obj/
 packages/
 *.suo
+*.svn-base
+*.db
+*.html
